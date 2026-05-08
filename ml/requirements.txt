@@ -1,0 +1,9 @@
+ultralytics>=8.4
+torch>=2.5
+fastapi>=0.115
+uvicorn[standard]>=0.34
+pillow>=11.0
+numpy>=1.26
+python-multipart>=0.0.20
+onnx>=1.17
+onnxsim>=0.4

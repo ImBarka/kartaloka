@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+
+# Model weights (besar, tidak perlu di repo)
+ml/runs/train/*/weights/epoch*.pt
+ml/runs/train/*/weights/last.pt
+
+# Dataset images (besar, dari Roboflow)
+train/
+valid/
+test/
+train.cache
+valid.cache
+test.cache
+*.cache
+
+# Node
+kartaloka-web/node_modules/
+kartaloka-web/.next/
+kartaloka-web/.env.local
+
+# Build artifacts
+dist/
+build/
+*.egg
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Debug
+debug_*.jpg
+debug_*.png
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Claude internal
+.claude/
+
+# Roboflow metadata
+README.dataset.txt
+README.roboflow.txt
+
+# Base model weights (download otomatis oleh ultralytics)
+yolov8n-obb.pt
+yolov8s-obb.pt
