@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { ArrowGlyph, InstructionCard, BatikOrnament, CameraIcon } from "./shared";
 
 // ── CV API helpers ────────────────────────────────────────────
-async function detectFromCanvas(canvas: HTMLCanvasElement, conf = 0.4): Promise<DetectedCard[]> {
+async function detectFromCanvas(canvas: HTMLCanvasElement, conf = 0.65): Promise<DetectedCard[]> {
   const blob = await new Promise<Blob>((res, rej) =>
     canvas.toBlob((b) => (b ? res(b) : rej(new Error("toBlob failed"))), "image/jpeg", 0.9)
   );
@@ -279,7 +279,7 @@ export default function CameraPanel() {
         canvas.height = h;
         canvas.getContext("2d")!.drawImage(video, 0, 0, w, h);
         try {
-          const cards = await detectFromCanvas(canvas, 0.4);
+          const cards = await detectFromCanvas(canvas, 0.65);
           if (cards.length > 0) allResults.push(cards);
         } catch (err) {
           const msg = err instanceof Error ? err.message : "";

@@ -96,9 +96,8 @@ function MiniMap({ path, pawnIdx }: { path: Point[]; pawnIdx: number }) {
           position: "absolute",
           left: `${path[pawnIdx][0] * cell + cell / 2}%`,
           top: `${path[pawnIdx][1] * cell + cell / 2}%`,
-          transform: "translate(-50%, -85%)",
+          transform: "translate(-50%, -50%)",
           transition: "left .8s ease-in-out, top .8s ease-in-out",
-          animation: "floaty 1.5s ease-in-out infinite",
         }}
       >
         <Pawn />
@@ -208,9 +207,9 @@ function HeroIllustration({ tick }: { tick: number }) {
     { dir: "right",   label: "TIMUR" },
   ];
   const path: Point[] = [
-    [2, 5], [2, 4], [3, 4], [4, 4], [4, 3], [5, 3], [6, 3],
+    [1, 1], [2, 1], [2, 2], [3, 2], [4, 2], [4, 3], [5, 3], [5, 4], [6, 4],
   ];
-  const pawnIdx = Math.min(tick + 2, path.length - 1);
+  const pawnIdx = Math.min(tick, path.length - 1);
 
   return (
     <div
@@ -317,7 +316,7 @@ function HeroIllustration({ tick }: { tick: number }) {
 export default function Hero() {
   const [tick, setTick] = useState(0);
   useEffect(() => {
-    const id = setInterval(() => setTick((t) => (t + 1) % 5), 1400);
+    const id = setInterval(() => setTick((t) => (t + 1) % 9), 1000);
     return () => clearInterval(id);
   }, []);
 
@@ -350,7 +349,7 @@ export default function Hero() {
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 28 }}>
               <span style={{ width: 32, height: 1, background: "var(--sogan)" }} />
-              <span className="eyebrow">Portal Belajar Pelajar · Kelas 5–9</span>
+              <span className="eyebrow">Media Belajar · Kelas 5 SD</span>
             </div>
 
             <h1 style={{ fontSize: "clamp(48px, 6vw, 84px)", lineHeight: 0.96, fontWeight: 500 }}>
@@ -380,9 +379,9 @@ export default function Hero() {
                 maxWidth: 560,
               }}
             >
-              Susun kartu instruksi fisik di atas meja, biarkan kamera membaca, lalu lihat
-              bidakmu menyusuri Sumbu Filosofi Yogyakarta. Coding tanpa layar — sampai layar
-              yang berbicara.
+              Susun kartu arah di atas meja, biarkan kamera membaca, lalu lihat
+              bidakmu berjalan dari Tugu ke Keraton. Belajar membaca peta dan
+              berpikir runtut — seperti petualang sungguhan.
             </p>
 
             <div style={{ display: "flex", alignItems: "center", gap: 16, marginTop: 36 }}>
@@ -411,8 +410,8 @@ export default function Hero() {
             {/* Stats */}
             <div style={{ display: "flex", gap: 32, marginTop: 56, flexWrap: "wrap" }}>
               {[
-                { n: "1:100m", l: "Skala kartu peta" },
-                { n: "4 arah", l: "Instruksi gerak" },
+                { n: "4 arah", l: "Utara · Selatan · Timur · Barat" },
+                { n: "Kelas 5", l: "Materi IPS & Peta" },
                 { n: "2,5 km", l: "Sumbu Filosofi" },
               ].map((s, i) => (
                 <div key={i}>
@@ -464,11 +463,11 @@ export default function Hero() {
             style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 0 }}
           >
             {[
-              { num: "01", title: "Susun Kartu", body: "Hitung skala, tata kartu arah mata angin di meja." },
-              { num: "02", title: "Pindai Kamera", body: "Kamera membaca susunan dan menyalin ke aplikasi." },
-              { num: "03", title: "Peta Interaktif", body: "Rute Tugu → Keraton muncul lengkap dengan grid." },
-              { num: "04", title: "Eksekusi", body: "Bidak digital bergerak real-time mengikuti algoritma." },
-              { num: "05", title: "Debug", body: "Salah jalur? Susun ulang kartu, coba lagi." },
+              { num: "01", title: "Susun Kartu", body: "Tata kartu Utara, Selatan, Timur, atau Barat di meja dari kiri ke kanan." },
+              { num: "02", title: "Pindai Kamera", body: "Kamera membaca susunan kartumu dan menyalin ke aplikasi secara otomatis." },
+              { num: "03", title: "Lihat Peta", body: "Rute perjalanan dari Tugu ke Keraton muncul di peta Sumbu Filosofi." },
+              { num: "04", title: "Jalankan", body: "Bidak bergerak mengikuti urutan kartumu — selangkah demi selangkah." },
+              { num: "05", title: "Coba Lagi", body: "Salah arah? Susun ulang kartu dan coba rute yang berbeda." },
             ].map((s, i) => (
               <div
                 key={i}

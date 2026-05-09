@@ -22,9 +22,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Kartaloka — Portal Belajar Peta & Algoritma",
+  title: "Kartaloka — Belajar Peta & Arah untuk Kelas 5 SD",
   description:
-    "Susun kartu instruksi fisik di atas meja, biarkan kamera membaca, lalu lihat bidakmu menyusuri Sumbu Filosofi Yogyakarta.",
+    "Susun kartu arah di meja, kamera membaca, lalu lihat bidakmu berjalan dari Tugu ke Keraton. Media belajar peta dan berpikir runtut untuk siswa kelas 5 SD.",
 };
 
 export default function RootLayout({

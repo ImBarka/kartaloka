@@ -14,7 +14,7 @@ from pathlib import Path
 from ultralytics import YOLO
 
 ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_WEIGHTS = ROOT / "ml" / "runs" / "train" / "kartaloka-obb-v2" / "weights" / "best.pt"
+DEFAULT_WEIGHTS = ROOT / "ml" / "runs" / "train" / "kartaloka-obb" / "weights" / "best.pt"
 EXPORT_DIR = ROOT / "ml" / "runs" / "export"
 
 

@@ -41,19 +41,20 @@ const CARD_TYPES: CardType[] = [
 const GRID_COLS = 9;
 const GRID_ROWS = 7;
 // Tugu (barat laut), Keraton (timur, agak selatan) — rute berliku: T2, S2, T2
-const START: PawnState = { x: 1, y: 1, facing: "N" };
-const KERATON: Point = { x: 5, y: 4 };
+// Tugu = kiri atas (utara), Keraton = kanan bawah (selatan) — sesuai peta Yogyakarta
+const START: PawnState = { x: 1, y: 1, facing: "S" };
+const KERATON: Point = { x: 6, y: 5 };
 
 const LANDMARKS: Array<{ x: number; y: number; kind: string; name: string }> = [
-  { x: 1, y: 1, kind: "tugu", name: "Tugu" },
-  { x: 2, y: 2, kind: "malioboro", name: "Malioboro" },
-  { x: 4, y: 3, kind: "beringharjo", name: "Beringharjo" },
-  { x: 5, y: 4, kind: "keraton", name: "Keraton" },
+  { x: 1, y: 1, kind: "tugu",       name: "Tugu" },
+  { x: 3, y: 2, kind: "malioboro",  name: "Malioboro" },
+  { x: 5, y: 4, kind: "beringharjo", name: "Beringharjo" },
+  { x: 6, y: 5, kind: "keraton",    name: "Keraton" },
 ];
 
 const OBSTACLES: Array<{ x: number; y: number; name: string }> = [
-  { x: 3, y: 1, name: "Becak" },
-  { x: 4, y: 4, name: "Andong" },
+  { x: 1, y: 3, name: "Becak" },
+  { x: 4, y: 5, name: "Andong" },
 ];
 
 // Setiap kartu menggerakkan pawn satu kotak ke arah absolut (mata angin)
@@ -599,10 +600,10 @@ export default function DemoPanel() {
   };
 
   const loadHint = () => {
-    // Rute Tugu (1,1) -> Keraton (5,4) menghindari Becak (3,1) dan Andong (4,4):
-    // S(1,2), T(2,2), T(3,2), S(3,3), T(4,3), T(5,3), S(5,4)
+    // Rute Tugu (1,1) -> Keraton (6,5) hindari Becak(1,3) dan Andong(4,5):
+    // T(2,1), S(2,2), T(3,2), T(4,2), S(4,3), S(4,4), T(5,4), T(6,4), S(6,5)
     setSequence(
-      ["selatan", "timur", "timur", "selatan", "timur", "timur", "selatan"].map((id, i) => ({
+      ["timur", "selatan", "timur", "timur", "selatan", "selatan", "timur", "timur", "selatan"].map((id, i) => ({
         ...(CARD_TYPES.find((c) => c.id === id) as CardType),
         uid: "h" + i,
       }))
