@@ -12,12 +12,13 @@ ml/runs/train/*/weights/epoch*.pt
 ml/runs/train/*/weights/last.pt
 
 # Dataset images (besar, dari Roboflow)
-train/
-valid/
-test/
-train.cache
-valid.cache
-test.cache
+ml/data/train/
+ml/data/valid/
+ml/data/test/
+ml/data/kartaloka-cards.yolov8-obb/
+ml/data/*.zip
+ml/raw_data/
+ml/weights/
 *.cache
 
 # Node

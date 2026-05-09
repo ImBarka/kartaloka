@@ -1,8 +1,20 @@
 # Kartaloka
 
-Media pembelajaran algoritma berbasis kartu fisik untuk siswa kelas 5–9, dengan tema peta Sumbu Filosofi Yogyakarta.
+Media pembelajaran algoritma berbasis kartu fisik untuk siswa **kelas 5 SD**, dengan tema peta Sumbu Filosofi Yogyakarta.
 
 Siswa menyusun kartu instruksi fisik (Utara / Selatan / Timur / Barat) di atas meja, kamera membaca susunannya secara otomatis, lalu bidak digital bergerak di peta dari Tugu menuju Keraton.
+
+---
+
+## Tampilan
+
+### Hero — Beranda
+
+![Hero section](docs/screenshot-hero.png)
+
+### Kamera Vision — Pindai Kartu Fisik
+
+![Kamera Vision](docs/screenshot-camera.png)
 
 ---
 
@@ -17,14 +29,20 @@ Kartaloka/
 ├── ml/                   # Machine Learning — YOLOv8-OBB
 │   ├── api/              # FastAPI inference server
 │   │   └── server.py
-│   ├── scripts/          # Training pipeline
+│   ├── data/             # Dataset (train/valid/test, dari Roboflow)
+│   ├── raw_data/         # Foto kartu fisik untuk training
+│   ├── runs/             # Hasil training & export model
+│   │   ├── train/        # Checkpoint per versi
+│   │   └── export/       # best.onnx — model siap pakai
+│   ├── scripts/          # Pipeline training
+│   │   ├── collect_data.py
 │   │   ├── prepare_dataset.py
 │   │   ├── train.py
 │   │   └── export.py
-│   ├── runs/export/      # Model siap pakai
-│   │   └── best.onnx
+│   ├── weights/          # Base model (yolov8n-obb.pt)
 │   └── requirements.txt
 │
+├── docs/                 # Screenshot untuk README
 ├── data.yaml             # Konfigurasi dataset YOLO
 ├── start-dev.ps1         # Script jalankan semua server sekaligus
 └── README.md
@@ -49,7 +67,7 @@ Kartaloka/
 ### 1. Clone repository
 
 ```bash
-git clone https://github.com/<username>/kartaloka.git
+git clone https://github.com/ImBarka/kartaloka.git
 cd kartaloka
 ```
 
@@ -116,7 +134,7 @@ Buka browser: `http://localhost:3000`
 5. Klik **Beri Petunjuk** untuk melihat solusi rute Tugu → Keraton
 
 ### Kamera Vision (dengan kartu fisik)
-1. Buat kartu fisik: **background hitam, panah putih**, 4 arah
+1. Buat kartu fisik: **background putih, panah hitam**, 4 arah
 2. Scroll ke bagian **Kamera Vision**
 3. Klik **Kamera Langsung**
 4. Susun kartu di meja dari kiri ke kanan
@@ -126,8 +144,8 @@ Buka browser: `http://localhost:3000`
 #### Spesifikasi kartu fisik
 | | |
 |---|---|
-| Background | Hitam solid |
-| Panah | Putih / terang, tebal |
+| Background | Putih solid |
+| Panah | Hitam, tebal |
 | Ukuran | Min. 10×10 cm |
 | Jumlah | 4 kartu (Utara, Selatan, Timur, Barat) |
 
@@ -137,25 +155,31 @@ Buka browser: `http://localhost:3000`
 
 Model sudah tersedia di `ml/runs/export/best.onnx`. Langkah ini hanya diperlukan jika ingin melatih ulang dengan data baru.
 
-### 1. Siapkan dataset
+### 1. Kumpulkan foto kartu fisik
 
-Letakkan dataset Roboflow (format YOLOv8-OBB) di root project, lalu jalankan:
+```bash
+python ml/scripts/collect_data.py --class up    # Utara
+python ml/scripts/collect_data.py --class down  # Selatan
+python ml/scripts/collect_data.py --class right # Timur
+python ml/scripts/collect_data.py --class left  # Barat
+```
+
+Kontrol: `SPACE` = ambil foto, `A` = auto-capture, `Q/ESC` = selesai
+
+### 2. Anotasi dataset
+
+Upload foto ke [Roboflow](https://roboflow.com), anotasi dengan label `up/down/left/right`, export format **YOLOv8 OBB**, extract ke root project.
+
+### 3. Training
 
 ```bash
 python ml/scripts/prepare_dataset.py
-```
-
-Script ini melakukan split stratified 70/20/10 per kelas dan menulis `data.yaml`.
-
-### 2. Training
-
-```bash
 python ml/scripts/train.py
 ```
 
-Hasil disimpan di `ml/runs/train/kartaloka-obb-v*/weights/best.pt`.
+Hasil disimpan di `ml/runs/train/kartaloka-obb/weights/best.pt`.
 
-### 3. Export ONNX
+### 4. Export ONNX
 
 ```bash
 python ml/scripts/export.py
@@ -163,10 +187,9 @@ python ml/scripts/export.py
 
 Model diekspor ke `ml/runs/export/best.onnx`.
 
-### 4. Restart API server
+### 5. Restart API server
 
 ```bash
-# Matikan server lama, lalu jalankan ulang
 uvicorn ml.api.server:app --host 0.0.0.0 --port 8001
 ```
 
@@ -191,4 +214,4 @@ uvicorn ml.api.server:app --host 0.0.0.0 --port 8001
 | CV Model | YOLOv8n-OBB (ultralytics 8.4) |
 | Inference | ONNX Runtime + FastAPI |
 | Training | PyTorch 2.5, CUDA |
-| Dataset | Roboflow — Directional Arrows |
+| Dataset | Roboflow — kartu fisik arah mata angin |
